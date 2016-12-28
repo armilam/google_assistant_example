@@ -1,14 +1,15 @@
 class GoogleAssistantController < ApplicationController
 
   def conversation
-    logger.debug(params)
+    puts params.as_json
 
-    assistant_response = GoogleAssistant.new(params).respond_to do |intent|
-      intent.main do
+    assistant_response = GoogleAssistant.new(params).respond_to do |assistant|
+      assistant.intent.main do
         logger.debug("main intent")
+        assistant.tell("<speak>I can speak!</speak>")
       end
 
-      intent.text do
+      assistant.intent.text do
         logger.debug("text intent")
       end
     end
