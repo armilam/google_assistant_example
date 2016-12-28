@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+Dir["#{File.dirname(__FILE__)}/google_assistant/**/*.rb"].each { |file| require file }
+
 class GoogleAssistant
   attr_reader :params
 

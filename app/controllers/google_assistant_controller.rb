@@ -1,3 +1,5 @@
+require "#{Rails.root}/lib/google-assistant-ruby/google_assistant"
+
 class GoogleAssistantController < ApplicationController
 
   def conversation
