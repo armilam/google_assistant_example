@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/armilam/google-assistant-ruby
+  revision: 46fa9e804f8129295270419fb636c924f0cd61ff
+  branch: master
+  specs:
+    google_assistant (0.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -157,6 +164,7 @@ PLATFORMS
 DEPENDENCIES
   byebug
   coffee-rails (~> 4.2)
+  google_assistant!
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)
