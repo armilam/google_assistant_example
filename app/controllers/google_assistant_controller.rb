@@ -5,7 +5,12 @@ class GoogleAssistantController < ApplicationController
 
     assistant_response = GoogleAssistant.new(params, response).respond_to do |assistant|
 
-      puts assistant.conversation.token
+      puts "state: #{assistant.conversation.state}"
+      puts "data: #{assistant.conversation.data}"
+      puts "arguments:"
+      assistant.arguments.each do |argument|
+        puts "    #{argument.text_value}"
+      end
 
       assistant.intent.main do
         input_prompt = assistant.build_input_prompt(true, "<speak>Say something please?</speak>", ["<speak>What was that?</speak>"])
@@ -13,7 +18,7 @@ class GoogleAssistantController < ApplicationController
       end
 
       assistant.intent.text do
-        assistant.tell("<speak>I heard you!</speak>")
+        assistant.tell("<speak>I heard you! You said #{assistant.arguments[0].text_value}!</speak>")
       end
     end
 
