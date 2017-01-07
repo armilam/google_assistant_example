@@ -13,7 +13,11 @@ class GoogleAssistantController < ApplicationController
       end
 
       assistant.intent.main do
-        input_prompt = assistant.build_input_prompt(true, "<speak>Say something please?</speak>", ["<speak>What was that?</speak>"])
+        input_prompt = assistant.build_input_prompt(
+          true,
+          "<speak>Say something please?</speak>",
+          ["<speak>What was that?</speak>", "<speak>Did you say something?</speak>"]
+        )
         assistant.ask(input_prompt)
       end
 
