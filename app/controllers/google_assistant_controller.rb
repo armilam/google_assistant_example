@@ -18,6 +18,9 @@ class GoogleAssistantController < ApplicationController
           "<speak>Say something please?</speak>",
           ["<speak>What was that?</speak>", "<speak>Did you say something?</speak>"]
         )
+
+        assistant.conversation.data["something"] = "or other"
+
         assistant.ask(input_prompt)
       end
 
