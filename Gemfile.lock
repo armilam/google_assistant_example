@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/armilam/google-assistant-ruby
-  revision: f965cdcfba208ae9961f68abb4a2533dadae33c2
-  branch: refactor-dialog-state
+  revision: 57c1e4a7f6484df791072661ce4459cd93a428c5
+  branch: master
   specs:
     google_assistant (0.0.5)
 
