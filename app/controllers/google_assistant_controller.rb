@@ -15,18 +15,30 @@ class GoogleAssistantController < ApplicationController
       assistant.intent.main do
         input_prompt = assistant.build_input_prompt(
           true,
-          "<speak>Say something please?</speak>",
+          "<speak>Hi there! Say a word, please.</speak>",
           ["<speak>What was that?</speak>", "<speak>Did you say something?</speak>"]
         )
 
-        assistant.conversation.state = "this is a state"
-        assistant.conversation.data["something"] = "or other"
+        assistant.conversation.state = "init"
 
         assistant.ask(input_prompt)
       end
 
       assistant.intent.text do
-        assistant.tell("<speak>I heard you! You said #{assistant.arguments[0].text_value}!</speak>")
+        if assistant.conversation.state == "init"
+          assistant.conversation.state = "step two"
+          assistant.conversation.data["word"] = assistant.arguments[0].text_value
+
+          input_prompt = assistant.build_input_prompt(
+            true,
+            "<speak>Great! Now say another word, please.</speak>",
+            ["<speak>What was that?</speak>", "<speak>Did you say something?</speak>"]
+          )
+
+          assistant.ask(input_prompt)
+        elsif assistant.conversation.state == "step two"
+          assistant.tell("<speak>Thanks! First you said #{assistant.conversation.data["word"]}, then you said #{assistant.arguments[0].text_value}!</speak>")
+        end
       end
     end
 
