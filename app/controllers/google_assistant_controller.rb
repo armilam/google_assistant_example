@@ -25,6 +25,7 @@ class GoogleAssistantController < ApplicationController
       end
 
       assistant.intent.text do
+        puts assistant.conversation.data
         assistant.tell("<speak>I heard you! You said #{assistant.arguments[0].text_value}!</speak>")
       end
     end
