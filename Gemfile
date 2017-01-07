@@ -31,7 +31,7 @@ gem "jbuilder", "~> 2.5"
 # Use Capistrano for deployment
 # gem "capistrano-rails", group: :development
 
-gem "google_assistant", git: "https://github.com/armilam/google-assistant-ruby", branch: "master"
+gem "google_assistant", git: "https://github.com/armilam/google-assistant-ruby", branch: "refactor-dialog-state"
 
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console
