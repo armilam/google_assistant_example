@@ -3,7 +3,7 @@ class GoogleAssistantController < ApplicationController
   def conversation
     puts params.as_json
 
-    assistant_response = GoogleAssistant.new(params, response).respond_to do |assistant|
+    assistant_response = GoogleAssistant.respond_to(params, response) do |assistant|
 
       puts "state: #{assistant.conversation.state}"
       puts "data: #{assistant.conversation.data}"
@@ -38,10 +38,12 @@ class GoogleAssistantController < ApplicationController
           )
         elsif assistant.conversation.state == "step two"
           assistant.tell("<speak>Thanks! First you said #{assistant.conversation.data["word"]}, then you said #{assistant.arguments[0].text_value}!</speak>")
+        else
+          assistant.tell("<speak>The state must've gotten corrupted. Whoops!</speak>")
         end
       end
     end
 
-    render assistant_response
+    render json: assistant_response
   end
 end
