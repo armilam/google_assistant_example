@@ -5,6 +5,7 @@ class GoogleAssistantController < ApplicationController
 
     assistant_response = GoogleAssistant.respond_to(params, response) do |assistant|
 
+      puts "user_id: #{assistant.user.id}"
       puts "state: #{assistant.conversation.state}"
       puts "data: #{assistant.conversation.data}"
       puts "arguments:"
