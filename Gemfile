@@ -32,7 +32,7 @@ gem "jbuilder", "~> 2.5"
 # gem "capistrano-rails", group: :development
 
 # gem "google_assistant"
-gem "google_assistant", git: "https://github.com/armilam/google-assistant-ruby", branch: "master"
+gem "google_assistant", git: "https://github.com/armilam/google-assistant-ruby", branch: "request-user-information"
 # gem "google_assistant", path: "~/Documents/Projects/Google Home/google-assistant-ruby"
 
 group :development, :test do

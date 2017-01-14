@@ -14,20 +14,25 @@ class GoogleAssistantController < ApplicationController
       end
 
       assistant.intent.main do
-        assistant.conversation.state = "init"
+        assistant.conversation.state = "asking permission"
 
-        assistant.ask(
-          prompt: "<speak>Hi there! Say a word, please.</speak>",
-          no_input_prompt: [
-            "<speak>What was that?</speak>",
-            "<speak>Did you say something?</speak>"
-          ]
-        )
+        assistant.ask_for_permission(context: "To know who you truly are", permissions: GoogleAssistant::Permission::NAME)
       end
 
       assistant.intent.text do
-        if assistant.conversation.state == "init"
-          assistant.conversation.state = "step two"
+        case assistant.conversation.state
+        when "asking permission"
+          assistant.conversation.state = "asking first word"
+
+          assistant.ask(
+            prompt: "<speak>Thanks! Say a word, please.</speak>",
+            no_input_prompt: [
+              "<speak>What was that?</speak>",
+              "<speak>Did you say something?</speak>"
+            ]
+          )
+        when "asking first word"
+          assistant.conversation.state = "asking second word"
           assistant.conversation.data["word"] = assistant.arguments[0].text_value
 
           assistant.ask(
@@ -37,7 +42,7 @@ class GoogleAssistantController < ApplicationController
               "<speak>Did you say something?</speak>"
             ]
           )
-        elsif assistant.conversation.state == "step two"
+        when "asking second word"
           assistant.tell("<speak>Thanks! First you said #{assistant.conversation.data["word"]}, then you said #{assistant.arguments[0].text_value}!</speak>")
         else
           assistant.tell("<speak>The state must've gotten corrupted. Whoops!</speak>")

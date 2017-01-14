@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/armilam/google-assistant-ruby
-  revision: 2e320dc8488a623687fa737ade1102b9392d794c
-  branch: master
+  revision: 2eb2de72df5a1a78db45ad28222b5cf2824cceb7
+  branch: request-user-information
   specs:
     google_assistant (0.1.0)
 
