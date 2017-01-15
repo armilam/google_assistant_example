@@ -29,7 +29,7 @@ class GoogleAssistantController < ApplicationController
           assistant.conversation.state = "asking first word"
 
           thanks = assistant.conversation.data["name"].present? ?
-            "Thanks, #{assistant.conversation.data["name"]}!",
+            "Thanks, #{assistant.conversation.data["name"]}!" :
             "Thanks!"
 
           assistant.ask(
