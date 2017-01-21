@@ -1,6 +1,7 @@
 class GoogleAssistantController < ApplicationController
 
   def conversation
+    puts "REQUEST PARAMS:"
     puts params.as_json
 
     assistant_response = GoogleAssistant.respond_to(params, response) do |assistant|
@@ -14,48 +15,61 @@ class GoogleAssistantController < ApplicationController
       end
 
       assistant.intent.main do
-        assistant.conversation.state = "asking permission"
+        assistant.conversation.state = "asking name permission"
 
         assistant.ask_for_permission(context: "To know who you truly are", permissions: GoogleAssistant::Permission::NAME)
       end
 
       assistant.intent.permission do
-        case assistant.conversation.state
-        when "asking permission"
-          if assistant.permission_granted?
-            assistant.conversation.data["name"] = assistant.user.given_name
-          end
-
-          assistant.conversation.state = "asking first word"
-
-          thanks = assistant.conversation.data["name"].present? ?
-            "Thanks, #{assistant.conversation.data["name"]}!" :
-            "Thanks!"
-
-          assistant.ask(
-            prompt: "<speak>#{thanks} Say a word, please.</speak>",
-            no_input_prompt: [
-              "<speak>What was that?</speak>",
-              "<speak>Did you say something?</speak>"
-            ]
-          )
+        if !assistant.permission_granted?
+          assistant.tell("<speak>Aw man, you don't trust me?</speak>")
         else
-          assistant.tell("<speak>The state must've gotten corrupted. Whoops!</speak>")
+
+          case assistant.conversation.state
+          when "asking name permission"
+            if assistant.permission_granted?
+              assistant.conversation.data["name"] = assistant.user.given_name
+            end
+
+            assistant.conversation.state = "asking coarse location"
+
+            assistant.ask_for_permission(context: "To know where in the country you are", permissions: GoogleAssistant::Permission::DEVICE_COARSE_LOCATION)
+          when "asking coarse location"
+            if assistant.permission_granted?
+              # assistant.conversation.data["coarse_location"] = assistant.user.coarse_location
+              puts "GRANTED COARSE LOCATION"
+            end
+
+            assistant.conversation.state = "asking precise location"
+
+            assistant.ask_for_permission(context: "To know where exactly you live", permissions: GoogleAssistant::Permission::DEVICE_PRECISE_LOCATION)
+          when "asking precise location"
+            if assistant.permission_granted?
+              # assistant.conversation.data["precise_location"] = assistant.user.precise_location
+              puts "GRANTED PRECISE LOCATION"
+            end
+
+            assistant.conversation.state = "asking first word"
+
+            thanks = assistant.conversation.data["name"].present? ?
+              "Thanks, #{assistant.conversation.data["name"]}!" :
+              "Thanks!"
+
+            assistant.ask(
+              prompt: "<speak>#{thanks} Say a word, please.</speak>",
+              no_input_prompt: [
+                "<speak>What was that?</speak>",
+                "<speak>Did you say something?</speak>"
+              ]
+            )
+          else
+            assistant.tell("<speak>The state must've gotten corrupted. Whoops!</speak>")
+          end
         end
       end
 
       assistant.intent.text do
         case assistant.conversation.state
-        when "asking permission"
-          assistant.conversation.state = "asking first word"
-
-          assistant.ask(
-            prompt: "<speak>Thanks! Say a word, please.</speak>",
-            no_input_prompt: [
-              "<speak>What was that?</speak>",
-              "<speak>Did you say something?</speak>"
-            ]
-          )
         when "asking first word"
           assistant.conversation.state = "asking second word"
           assistant.conversation.data["word"] = assistant.arguments[0].text_value
