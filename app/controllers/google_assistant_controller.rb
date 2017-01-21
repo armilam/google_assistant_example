@@ -33,11 +33,11 @@ class GoogleAssistantController < ApplicationController
 
             assistant.conversation.state = "asking coarse location"
 
-            assistant.ask_for_permission(context: "To know where in the country you are", permissions: GoogleAssistant::Permission::DEVICE_COARSE_LOCATION)
+            assistant.ask_for_permission(context: "To know approximately where you are", permissions: GoogleAssistant::Permission::DEVICE_COARSE_LOCATION)
           when "asking coarse location"
             if assistant.permission_granted?
-              # assistant.conversation.data["coarse_location"] = assistant.user.coarse_location
-              puts "GRANTED COARSE LOCATION"
+              assistant.conversation.data["zip_code"] = assistant.device.zip_code
+              assistant.conversation.data["city"] = assistant.device.city
             end
 
             assistant.conversation.state = "asking precise location"
@@ -45,15 +45,13 @@ class GoogleAssistantController < ApplicationController
             assistant.ask_for_permission(context: "To know where exactly you live", permissions: GoogleAssistant::Permission::DEVICE_PRECISE_LOCATION)
           when "asking precise location"
             if assistant.permission_granted?
-              # assistant.conversation.data["precise_location"] = assistant.user.precise_location
-              puts "GRANTED PRECISE LOCATION"
+              assistant.conversation.data["address"] = assistant.device.formatted_address
+              assistant.conversation.data["coordinates"] = assistant.device.coordinates
             end
 
             assistant.conversation.state = "asking first word"
 
-            thanks = assistant.conversation.data["name"].present? ?
-              "Thanks, #{assistant.conversation.data["name"]}!" :
-              "Thanks!"
+            thanks = "Thanks, #{assistant.conversation.data["name"]} from #{assistant.conversation.data["city"]}!"
 
             assistant.ask(
               prompt: "<speak>#{thanks} Say a word, please.</speak>",
