@@ -3,7 +3,15 @@
   "agentInfo": {
     "languageCode": "en-US",
     "projectId": "meta-cistern-153620",
-    "voiceName": "male_1"
+    "voiceName": "male_1",
+    "accountLinking": {
+      "grantType": "AUTH_CODE_GRANT",
+      "clientId": "846420163594-7ka6ptu692q369catr17rqv187fbbj1s.apps.googleusercontent.com",
+      "clientSecret": "6voBCyHQUK3thoLoYBglzRmL",
+      "authenticationUrl": "https://google-assistant-ruby-example.herokuapp.com/oauth",
+      "accessTokenUrl": "https://google-assistant-ruby-example.herokuapp.com/oauth/token",
+      "scopes": []
+    }
   },
   "actions": [
     {
@@ -12,7 +20,8 @@
       },
       "httpExecution": {
         "url": "https://google-assistant-ruby-example.herokuapp.com/"
-      }
+      },
+      "signInRequired": true
     }
   ]
 }
