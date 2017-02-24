@@ -31,8 +31,8 @@ gem "jbuilder", "~> 2.5"
 # Use Capistrano for deployment
 # gem "capistrano-rails", group: :development
 
-# gem "google_assistant"
-gem "google_assistant", git: "https://github.com/armilam/google-assistant-ruby", branch: "access-token"
+gem "google_assistant"
+# gem "google_assistant", git: "https://github.com/armilam/google-assistant-ruby", branch: "master"
 # gem "google_assistant", path: "~/Documents/Projects/Google Home/google-assistant-ruby"
 
 group :development, :test do
@@ -49,6 +49,3 @@ group :development do
   gem "spring-watcher-listen", "~> 2.0.0"
   gem "pry-rails"
 end
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
