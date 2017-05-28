@@ -17,7 +17,7 @@ class GoogleAssistantController < ApplicationController
       assistant.intent.main do
         assistant.conversation.state = "asking name permission"
 
-        assistant.ask_for_permission(context: "To know who you truly are", permissions: GoogleAssistant::Permission::NAME)
+        assistant.ask_for_permission("To know who you truly are", GoogleAssistant::Permission::NAME)
       end
 
       assistant.intent.permission do
@@ -33,7 +33,7 @@ class GoogleAssistantController < ApplicationController
 
             assistant.conversation.state = "asking coarse location"
 
-            assistant.ask_for_permission(context: "To know approximately where you are", permissions: GoogleAssistant::Permission::DEVICE_COARSE_LOCATION)
+            assistant.ask_for_permission("To know approximately where you are", GoogleAssistant::Permission::DEVICE_COARSE_LOCATION)
           when "asking coarse location"
             if assistant.permission_granted?
               assistant.conversation.data["zip_code"] = assistant.device.zip_code
@@ -42,7 +42,7 @@ class GoogleAssistantController < ApplicationController
 
             assistant.conversation.state = "asking precise location"
 
-            assistant.ask_for_permission(context: "To know where exactly you live", permissions: GoogleAssistant::Permission::DEVICE_PRECISE_LOCATION)
+            assistant.ask_for_permission("To know where exactly you live", GoogleAssistant::Permission::DEVICE_PRECISE_LOCATION)
           when "asking precise location"
             if assistant.permission_granted?
               assistant.conversation.data["address"] = assistant.device.formatted_address
@@ -54,8 +54,8 @@ class GoogleAssistantController < ApplicationController
             thanks = "Thanks, #{assistant.conversation.data["name"]} from #{assistant.conversation.data["city"]}!"
 
             assistant.ask(
-              prompt: "<speak>#{thanks} Say a word, please.</speak>",
-              no_input_prompt: [
+              "<speak>#{thanks} Say a word, please.</speak>",
+              [
                 "<speak>What was that?</speak>",
                 "<speak>Did you say something?</speak>"
               ]
@@ -73,8 +73,8 @@ class GoogleAssistantController < ApplicationController
           assistant.conversation.data["word"] = assistant.arguments[0].text_value
 
           assistant.ask(
-            prompt: "<speak>Great! Now say another word, please.</speak>",
-            no_input_prompt: [
+            "<speak>Great! Now say another word, please.</speak>",
+            [
               "<speak>What was that?</speak>",
               "<speak>Did you say something?</speak>"
             ]
